@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 void main() => runApp(QuizApp());
 
@@ -38,10 +37,23 @@ class _QuizPageState extends State<QuizPage> {
     color: Colors.red,
   );
 
-  List<Widget> scoreKeeper = [
-    _true,
-    _false,
+  List<Widget> scoreKeeper = [];
+
+  List<Map<String, Object>> questions = [
+    {'q': '1 + 1 = 2', 'a': true},
+    {'q': '2 / 2 = 2', 'a': false},
+    {'q': '3 * 3 = 3', 'a': false},
   ];
+
+  int no = 0;
+
+  takeAnswer(bool a) {
+    setState(() {
+      scoreKeeper.add(questions[no]['a'] == a ? _true : _false);
+    });
+    no == questions.length - 1 ? no = 0 : no++;
+    if (scoreKeeper.length > 14) scoreKeeper.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +67,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is Question',
+                questions[no]['q'],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -78,11 +90,7 @@ class _QuizPageState extends State<QuizPage> {
                   fontSize: 20.0,
                 ),
               ),
-              onPressed: () {
-                setState(() {
-                  scoreKeeper.add(Random().nextInt(2) == 0 ? _true : _false);
-                });
-              },
+              onPressed: () => takeAnswer(true),
             ),
           ),
         ),
@@ -98,9 +106,7 @@ class _QuizPageState extends State<QuizPage> {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {
-                setState(() => scoreKeeper.clear());
-              },
+              onPressed: () => takeAnswer(false),
             ),
           ),
         ),
