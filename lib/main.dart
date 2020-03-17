@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'question.dart';
 
 void main() => runApp(QuizApp());
 
@@ -39,17 +40,17 @@ class _QuizPageState extends State<QuizPage> {
 
   List<Widget> scoreKeeper = [];
 
-  List<Map<String, Object>> questions = [
-    {'q': '1 + 1 = 2', 'a': true},
-    {'q': '2 / 2 = 2', 'a': false},
-    {'q': '3 * 3 = 3', 'a': false},
+  List<Question> questions = [
+    Question(q: '1 + 1 = 2', a: true),
+    Question(q: '2 / 2 = 2', a: false),
+    Question(q: '3 * 3 = 3', a: false),
   ];
 
   int no = 0;
 
   takeAnswer(bool a) {
     setState(() {
-      scoreKeeper.add(questions[no]['a'] == a ? _true : _false);
+      scoreKeeper.add(questions[no].answer == a ? _true : _false);
     });
     no == questions.length - 1 ? no = 0 : no++;
     if (scoreKeeper.length > 14) scoreKeeper.clear();
@@ -67,7 +68,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[no]['q'],
+                questions[no].question,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
